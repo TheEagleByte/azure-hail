@@ -25,9 +25,15 @@ export PYSPARK_DRIVER_PYTHON=/usr/bin/anaconda/envs/hail/bin/python3.7
 export PYSPARK_PYTHON=${PYSPARK_PYTHON:-/usr/bin/anaconda/envs/hail/bin/python3.7}
 ```
 
-13. Save the changes and restart the affected services. These changes need a restart of Spark2 service. Ambari UI will prompt a required restart reminder, click Restart to restart all affected services.
-14. To add the new virtual environment to jupyter notebook, go to the Azure dashboard for your HDInsight cluster
-15. Open the Script Actions Tab
-16. Add a new custom script action only for the header nodes to set the jupyter notebook instance to use the new hail environment with a link to a copy of `set-jupyter-to-hail.sh`
-17. Wait for the script to complete
-18. You have successfully completed configuration of the cluster to run hail
+13. Append the following to the end of the line starting with `export SPARK_DIST_CLASSPATH=...`:
+
+```
+/usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/hail-all-spark.jar:
+```
+
+14. Save the changes and restart the affected services. These changes need a restart of Spark2 service. Ambari UI will prompt a required restart reminder, click Restart to restart all affected services.
+15. To add the new virtual environment to jupyter notebook, go to the Azure dashboard for your HDInsight cluster
+16. Open the Script Actions Tab
+17. Add a new custom script action only for the header nodes to set the jupyter notebook instance to use the new hail environment with a link to a copy of `set-jupyter-to-hail.sh`
+18. Wait for the script to complete
+19. You have successfully completed configuration of the cluster to run hail
