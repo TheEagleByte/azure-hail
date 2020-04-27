@@ -6,7 +6,7 @@ Hail On Azure using HDInsights
 2. Create an Azure Data Lake Storage Gen2 instance
 3. Add the Managed Identity to be the storage instance with "Storage Blob Data Owner" role
 4. Create an HDInsight Cluster with the type of "Spark" with version 2.4
-5. Add a Script Action to the configuration tab with a link to a copy of `hail-install.sh`
+5. Add a Script Action to the configuration tab with a link to a copy of `hail-install.sh` for both Head and Worker Nodes
 6. Wait for the cluster to reach a "Running" status
 7. Open the Apache Ambari Dashboard on the HDInsight Cluster
 8. Go to the page for `Spark2` by clicking it on the left panel
@@ -15,6 +15,7 @@ Hail On Azure using HDInsights
 
 ```
 export PYSPARK_PYTHON=/usr/bin/anaconda/envs/hail/bin/python3.7
+export PYSPARK3_PYTHON=/usr/bin/anaconda/envs/hail/bin/python3.7
 export PYSPARK_DRIVER_PYTHON=/usr/bin/anaconda/envs/hail/bin/python3.7
 ```
 
@@ -40,10 +41,11 @@ export PYSPARK_PYTHON=${PYSPARK_PYTHON:-/usr/bin/anaconda/envs/hail/bin/python3.
 20. Do the same (steps 15 - 19) for the next 3 items:
 
 | Key | Value |
-| ----------------------------- | ------------------------------------------------------------------------------- |
-| spark.jars                    | /usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/hail-all-spark.jar |
-| spark.driver.extraClassPath   | /usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/hail-all-spark.jar |
-| spark.executer.extraClassPath | ./hail-all-spark.jar                                                            |
+| ----------------------------- | --------------------------------------------------------------------------------------- |
+| spark.jars                    | /usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/backend/hail-all-spark.jar |
+| spark.driver.extraClassPath   | /usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/backend/hail-all-spark.jar |
+| spark.yarn.dist.jars          | /usr/bin/anaconda/envs/hail/lib/python3.7/site-packages/hail/backend/hail-all-spark.jar |
+| spark.executer.extraClassPath | ./hail-all-spark.jar                                                                    |
 
 21. Save the changes and restart the affected services. These changes need a restart of Spark2 service. Ambari UI will prompt a required restart reminder, click Restart to restart all affected services.
 22. To add the new virtual environment to jupyter notebook, go to the Azure dashboard for your HDInsight cluster
